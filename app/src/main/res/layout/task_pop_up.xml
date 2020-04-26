@@ -44,6 +44,7 @@
         android:layout_width="369dp"
         android:layout_height="53dp"
         android:hint="Task"
+        android:maxLines="1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

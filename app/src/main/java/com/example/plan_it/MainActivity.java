@@ -1,14 +1,19 @@
 package com.example.plan_it;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
@@ -23,6 +28,10 @@ public class MainActivity extends AppCompatActivity
 {
     SwipeMenuListView lvTasks;
     ImageView addWidget;
+    EditText taskEdited;
+
+    private String phoneDate;
+    private String editedInput;
 
     static ArrayAdapter<String> taskAdapter;
     static ArrayList<String> tasks;
@@ -30,8 +39,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        String phoneDate;
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -102,18 +109,57 @@ public class MainActivity extends AppCompatActivity
         lvTasks.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener()
         {
             @Override
-            public boolean onMenuItemClick(int position, SwipeMenu menu, int index)
+            public boolean onMenuItemClick(final int position, SwipeMenu menu, int index)
             {
                 switch (index)
                 {
                     case 0:
                         // Edit
+                        // Create new Alert Dialog on this instance
+                        final AlertDialog.Builder editDialog = new AlertDialog.Builder(MainActivity.this);
+                        editDialog.setTitle("Edit your task below");
+
+                        // Initialize editText
+                        taskEdited = new EditText(MainActivity.this);
+
+                        // Set the View
+                        editDialog.setView(taskEdited);
+
+                        // Set confirm button
+                        editDialog.setPositiveButton("Confirm", new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which)
+                            {
+                                // Store input
+                                editedInput = taskEdited.getText().toString();
+
+                                // Modify arraylist
+                                tasks.set(position, editedInput);
+                                taskAdapter.notifyDataSetChanged();
+
+                                // Alert that change has been made
+                                Toast.makeText(MainActivity.this, "Task has been updated.", Toast.LENGTH_LONG).show();
+                            }
+                        });
+
+                        editDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which)
+                            {
+                                dialog.cancel();
+                            }
+                        });
+
+                        // Set the dialog window to be visible
+                        editDialog.show();
                         break;
                     case 1:
                         // Delete task
                         tasks.remove(position);
                         taskAdapter.notifyDataSetChanged();
-                        return false;
+                        break;
                 }
 
                 // False : Close the swipe menu; true : Do not close the swipe menu

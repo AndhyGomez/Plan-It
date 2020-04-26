@@ -10,4 +10,5 @@
     <string name="enter_your_task_below">Enter Your Task Below</string>
     <string name="task">Task</string>
     <string name="add_task">Add Task</string>
+    <string name="edit_your_task_below">Edit your task below</string>
 </resources>

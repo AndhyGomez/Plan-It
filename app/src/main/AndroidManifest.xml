@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ClickedAdd"></activity>
+        <activity android:name=".ClickedEdit"></activity>
+        <activity android:name=".ClickedAdd" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
