@@ -10,11 +10,19 @@
 package com.example.plan_it;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 import static com.example.plan_it.MainActivity.taskAdapter;
 import static com.example.plan_it.MainActivity.tasks;
@@ -49,6 +57,9 @@ public class ClickedAdd extends AppCompatActivity
                 tasks.add(userInput);
                 taskAdapter.notifyDataSetChanged();
 
+                // Save the data
+                saveData();
+
                 // Close window when done
                 closeWindow(v);
             }
@@ -76,5 +87,15 @@ public class ClickedAdd extends AppCompatActivity
     public void closeWindow(View v)
     {
         finish();
+    }
+
+    private void saveData()
+    {
+        SharedPreferences appList = getSharedPreferences("shared preferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = appList.edit();
+        Gson gson = new Gson();
+        String item = gson.toJson(tasks);
+        editor.putString("tasks", item);
+        editor.apply();
     }
 }

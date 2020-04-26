@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -28,7 +29,10 @@ import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -49,6 +53,9 @@ public class MainActivity extends AppCompatActivity
     private String phoneDate;
     private String editedInput;
 
+    private final String PREFS = "shared preferences";
+    private final String TASKS = "tasks";
+
     /**
      * Global class array list and adapter
      */
@@ -68,7 +75,7 @@ public class MainActivity extends AppCompatActivity
         TextView date = findViewById(R.id.dateView);
         date.setText(phoneDate);
 
-        tasks = new ArrayList<>();
+        loadData();
         taskAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, tasks);
 
         // OnClickListener for plus button
@@ -104,6 +111,9 @@ public class MainActivity extends AppCompatActivity
                             // Clear the list of tasks
                             clearList();
                             taskAdapter.notifyDataSetChanged();
+
+                            // Save the data
+                            saveData();
                         }
                     });
 
@@ -197,6 +207,9 @@ public class MainActivity extends AppCompatActivity
                                 tasks.set(position, editedInput);
                                 taskAdapter.notifyDataSetChanged();
 
+                                // Save the data
+                                saveData();
+
                                 // Alert that change has been made
                                 Toast.makeText(MainActivity.this, "Task has been updated.", Toast.LENGTH_LONG).show();
                             }
@@ -229,6 +242,10 @@ public class MainActivity extends AppCompatActivity
                                 tasks.remove(position);
                                 taskAdapter.notifyDataSetChanged();
 
+                                // Save the data
+                                saveData();
+
+
                                 // Alert that change has been made
                                 Toast.makeText(MainActivity.this, "Task has been deleted.", Toast.LENGTH_LONG).show();
                             }
@@ -260,7 +277,7 @@ public class MainActivity extends AppCompatActivity
      *
      * @param v View to be passed
      */
-    public void openAdd(View v)
+    private void openAdd(View v)
     {
         Intent openWindow = new Intent(this, ClickedAdd.class);
         startActivity(openWindow);
@@ -269,7 +286,7 @@ public class MainActivity extends AppCompatActivity
     /**
      * Description: This method serves to clear an array list recursively
      */
-    public void clearList()
+    private void clearList()
     {
         int indexToRemove;
 
@@ -284,8 +301,37 @@ public class MainActivity extends AppCompatActivity
             indexToRemove = (tasks.size() - 1);
             tasks.remove(indexToRemove);
 
+            // Save the data
+            saveData();
+
             // Recursive call
             clearList();
         }
     }
+
+    private void saveData()
+    {
+        SharedPreferences appList = getSharedPreferences(PREFS, MODE_PRIVATE);
+        SharedPreferences.Editor editor = appList.edit();
+        Gson gson = new Gson();
+        String item = gson.toJson(tasks);
+        editor.putString(TASKS, item);
+        editor.apply();
+    }
+
+    private void loadData()
+    {
+        SharedPreferences appList = getSharedPreferences(PREFS, MODE_PRIVATE);
+        Gson gson = new Gson();
+        String item = appList.getString(TASKS, null);
+        Type type = new TypeToken<ArrayList>() {}.getType();
+        tasks = gson.fromJson(item, type);
+
+        if(tasks == null)
+        {
+            tasks = new ArrayList<>();
+        }
+    }
+
+
 }
