@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity
 {
     SwipeMenuListView lvTasks;
     ImageView addWidget;
+    ImageView clearWidget;
     EditText taskEdited;
 
     private String phoneDate;
@@ -62,6 +63,43 @@ public class MainActivity extends AppCompatActivity
                 openAdd(v);
             }
         });
+
+        // OnClickListener for clear all button
+        clearWidget = findViewById(R.id.imageViewClearAll);
+        clearWidget.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                // Create dialog pop up for clear all button
+                final AlertDialog.Builder clearAllWarning = new AlertDialog.Builder(MainActivity.this);
+                clearAllWarning.setTitle("Warning: This will clear ALL tasks");
+
+                clearAllWarning.setPositiveButton("Continue", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        // Clear the list of tasks
+                        clearList();
+                        taskAdapter.notifyDataSetChanged();
+                    }
+                });
+
+                // Set cancel button
+                clearAllWarning.setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        dialog.cancel();
+                    }
+                });
+
+                clearAllWarning.show();
+            }
+        });
+
 
         // Reference to listView
         lvTasks = findViewById(R.id.taskList);
@@ -143,6 +181,7 @@ public class MainActivity extends AppCompatActivity
                             }
                         });
 
+                        // Set cancel button
                         editDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener()
                         {
                             @Override
@@ -172,5 +211,25 @@ public class MainActivity extends AppCompatActivity
     {
         Intent openWindow = new Intent(this, ClickedAdd.class);
         startActivity(openWindow);
+    }
+
+    public void clearList()
+    {
+        int indexToRemove;
+
+        // Completion Case
+        if(tasks.size() == 0)
+        {
+            // Alert that change has been made
+            Toast.makeText(MainActivity.this, "List has been cleared.", Toast.LENGTH_LONG).show();
+        }
+        else // What is done if the list is not yet empty
+        {
+            indexToRemove = (tasks.size() - 1);
+            tasks.remove(indexToRemove);
+
+            // Recursive call
+            clearList();
+        }
     }
 }

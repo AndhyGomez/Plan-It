@@ -11,4 +11,6 @@
     <string name="task">Task</string>
     <string name="add_task">Add Task</string>
     <string name="edit_your_task_below">Edit your task below</string>
+    <string name="todo">TODO</string>
+    <string name="clearall">clearall</string>
 </resources>
