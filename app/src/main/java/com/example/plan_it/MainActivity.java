@@ -10,8 +10,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,8 +27,8 @@ import java.util.Calendar;
 public class MainActivity extends AppCompatActivity
 {
     SwipeMenuListView lvTasks;
-    ImageView addWidget;
-    ImageView clearWidget;
+    Button addWidget;
+    Button clearWidget;
     EditText taskEdited;
 
     private String phoneDate;
@@ -50,11 +50,11 @@ public class MainActivity extends AppCompatActivity
         TextView date = findViewById(R.id.dateView);
         date.setText(phoneDate);
 
-        tasks = new ArrayList<String>();
-        taskAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, tasks);
+        tasks = new ArrayList<>();
+        taskAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, tasks);
 
         // OnClickListener for plus button
-        addWidget = findViewById(R.id.imageViewAdd);
+        addWidget = findViewById(R.id.buttonAddTask);
         addWidget.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -65,38 +65,40 @@ public class MainActivity extends AppCompatActivity
         });
 
         // OnClickListener for clear all button
-        clearWidget = findViewById(R.id.imageViewClearAll);
+        clearWidget = findViewById(R.id.buttonClear);
         clearWidget.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                // Create dialog pop up for clear all button
-                final AlertDialog.Builder clearAllWarning = new AlertDialog.Builder(MainActivity.this);
-                clearAllWarning.setTitle("Warning: This will clear ALL tasks");
-
-                clearAllWarning.setPositiveButton("Continue", new DialogInterface.OnClickListener()
+                if(tasks.size() == 0)
                 {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
-                        // Clear the list of tasks
-                        clearList();
-                        taskAdapter.notifyDataSetChanged();
-                    }
-                });
+                    Toast.makeText(MainActivity.this, "Your list is empty.", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    // Create dialog pop up for clear all button
+                    final AlertDialog.Builder clearAllWarning = new AlertDialog.Builder(MainActivity.this);
+                    clearAllWarning.setTitle("Warning: This will clear ALL tasks");
 
-                // Set cancel button
-                clearAllWarning.setNegativeButton("Cancel", new DialogInterface.OnClickListener()
-                {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
-                        dialog.cancel();
-                    }
-                });
+                    clearAllWarning.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Clear the list of tasks
+                            clearList();
+                            taskAdapter.notifyDataSetChanged();
+                        }
+                    });
 
-                clearAllWarning.show();
+                    // Set cancel button
+                    clearAllWarning.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+
+                    clearAllWarning.show();
+                }
             }
         });
 
@@ -159,6 +161,7 @@ public class MainActivity extends AppCompatActivity
 
                         // Initialize editText
                         taskEdited = new EditText(MainActivity.this);
+                        taskEdited.setMaxLines(1);
 
                         // Set the View
                         editDialog.setView(taskEdited);
@@ -196,8 +199,35 @@ public class MainActivity extends AppCompatActivity
                         break;
                     case 1:
                         // Delete task
-                        tasks.remove(position);
-                        taskAdapter.notifyDataSetChanged();
+                        // Create new Alert Dialog on this instance
+                        final AlertDialog.Builder deleteWarning = new AlertDialog.Builder(MainActivity.this);
+                        deleteWarning.setTitle("Would like to delete this task?");
+
+                        deleteWarning.setPositiveButton("Delete", new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which)
+                            {
+                                tasks.remove(position);
+                                taskAdapter.notifyDataSetChanged();
+
+                                // Alert that change has been made
+                                Toast.makeText(MainActivity.this, "Task has been deleted.", Toast.LENGTH_LONG).show();
+                            }
+                        });
+
+                        deleteWarning.setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which)
+                            {
+                                dialog.cancel();
+                            }
+                        });
+
+                        // Set the dialog window to be visible
+                        deleteWarning.show();
+
                         break;
                 }
 

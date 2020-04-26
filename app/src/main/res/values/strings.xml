@@ -13,4 +13,7 @@
     <string name="edit_your_task_below">Edit your task below</string>
     <string name="todo">TODO</string>
     <string name="clearall">clearall</string>
+    <string name="new_task">New Task</string>
+    <string name="clear_all">Clear All</string>
+    <string name="taskhint">Task</string>
 </resources>
