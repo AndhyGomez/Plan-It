@@ -89,6 +89,9 @@ public class ClickedAdd extends AppCompatActivity
         finish();
     }
 
+    /**
+     * Description: This method saves data to the device's shared preferences folder
+     */
     private void saveData()
     {
         SharedPreferences appList = getSharedPreferences("shared preferences", MODE_PRIVATE);

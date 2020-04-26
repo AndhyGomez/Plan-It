@@ -309,6 +309,9 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Description: This method saves data to the device's shared preferences folder
+     */
     private void saveData()
     {
         SharedPreferences appList = getSharedPreferences(PREFS, MODE_PRIVATE);
@@ -319,6 +322,9 @@ public class MainActivity extends AppCompatActivity
         editor.apply();
     }
 
+    /**
+     * Description: This method loads date from the device's shared preferences folder
+     */
     private void loadData()
     {
         SharedPreferences appList = getSharedPreferences(PREFS, MODE_PRIVATE);
