@@ -1,3 +1,12 @@
+/**
+ * Author: Andhy Gomez
+ *
+ * Date Last Modified: 4/26/2020
+ *
+ * Description: Source code for my first android app, Plan-It. Plan-It is a simple to-do-list
+ * app with most basic functionalities one has come to expect from an app of this kind.
+ */
+
 package com.example.plan_it;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -59,6 +68,11 @@ public class ClickedAdd extends AppCompatActivity
 
     }
 
+    /**
+     * Description: This method closes the pop up window
+     *
+     * @param v View to be closed
+     */
     public void closeWindow(View v)
     {
         finish();

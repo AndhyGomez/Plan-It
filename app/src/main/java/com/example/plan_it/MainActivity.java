@@ -1,3 +1,12 @@
+/**
+ * Author: Andhy Gomez
+ *
+ * Date Last Modified: 4/26/2020
+ *
+ * Description: Source code for my first android app, Plan-It. Plan-It is a simple to-do-list
+ * app with most basic functionalities one has come to expect from an app of this kind.
+ */
+
 package com.example.plan_it;
 
 import androidx.appcompat.app.AlertDialog;
@@ -26,14 +35,23 @@ import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity
 {
+    /**
+     * Class objects
+     */
     SwipeMenuListView lvTasks;
     Button addWidget;
     Button clearWidget;
     EditText taskEdited;
 
+    /**
+     * Class variables
+     */
     private String phoneDate;
     private String editedInput;
 
+    /**
+     * Global class array list and adapter
+     */
     static ArrayAdapter<String> taskAdapter;
     static ArrayList<String> tasks;
 
@@ -237,12 +255,20 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
+    /**
+     * Description: This method starts the activity of the ClickedAdd class
+     *
+     * @param v View to be passed
+     */
     public void openAdd(View v)
     {
         Intent openWindow = new Intent(this, ClickedAdd.class);
         startActivity(openWindow);
     }
 
+    /**
+     * Description: This method serves to clear an array list recursively
+     */
     public void clearList()
     {
         int indexToRemove;
