@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -53,15 +54,21 @@ public class ClickedAdd extends AppCompatActivity
                 // Store input as string
                 userInput = taskInput.getText().toString();
 
-                // Add the users input into tasks array list
-                tasks.add(userInput);
-                taskAdapter.notifyDataSetChanged();
+                if(userInput.isEmpty())
+                {
+                    Toast.makeText(ClickedAdd.this, "Cannot have blank task.", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    // Add the users input into tasks array list
+                    tasks.add(userInput);
+                    taskAdapter.notifyDataSetChanged();
 
-                // Save the data
-                saveData();
+                    // Save the data
+                    saveData();
 
-                // Close window when done
-                closeWindow(v);
+                    // Close window when done
+                    closeWindow(v);
+                }
             }
         });
 

@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -75,7 +76,15 @@ public class MainActivity extends AppCompatActivity
         TextView date = findViewById(R.id.dateView);
         date.setText(phoneDate);
 
-        loadData();
+        try
+        {
+            loadData();
+        }
+        catch (Resources.NotFoundException nfe)
+        {
+            tasks = new ArrayList<>();
+        }
+
         taskAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, tasks);
 
         // OnClickListener for plus button
@@ -203,15 +212,21 @@ public class MainActivity extends AppCompatActivity
                                 // Store input
                                 editedInput = taskEdited.getText().toString();
 
-                                // Modify arraylist
-                                tasks.set(position, editedInput);
-                                taskAdapter.notifyDataSetChanged();
+                                if(editedInput.isEmpty())
+                                {
+                                    Toast.makeText(MainActivity.this, "Cannot have blank task.", Toast.LENGTH_LONG).show();
+                                }
+                                else {
+                                    // Modify arraylist
+                                    tasks.set(position, editedInput);
+                                    taskAdapter.notifyDataSetChanged();
 
-                                // Save the data
-                                saveData();
+                                    // Save the data
+                                    saveData();
 
-                                // Alert that change has been made
-                                Toast.makeText(MainActivity.this, "Task has been updated.", Toast.LENGTH_LONG).show();
+                                    // Alert that change has been made
+                                    Toast.makeText(MainActivity.this, "Task has been updated.", Toast.LENGTH_LONG).show();
+                                }
                             }
                         });
 
@@ -335,7 +350,7 @@ public class MainActivity extends AppCompatActivity
 
         if(tasks == null)
         {
-            tasks = new ArrayList<>();
+            throw new Resources.NotFoundException();
         }
     }
 
