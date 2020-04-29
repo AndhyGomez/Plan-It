@@ -21,7 +21,7 @@ Here are some different views on the app.
 
 ## Compilation Instructions
 
-(On android phone)
+#### **(On Android Phone)**
 1. Download APK file to your computer
 2. Allow third-party apps on your device (Menu > Settings > Security > check Unknown Sources)
 3. Connect android device to your computer as a media device
@@ -29,3 +29,8 @@ Here are some different views on the app.
 5. Copy APK file into folder of your choice
 6. Find APK file on your phone, tap it, hit install
 7. Open app
+
+#### **(From Android Studio)**
+1. Load the project
+2. Tools > AVD Manager (Set up any android virtual device)
+3. Either click the play button or select "Run" in the toolbar followed by "Run app" (Shortcut = Shift + f10)
