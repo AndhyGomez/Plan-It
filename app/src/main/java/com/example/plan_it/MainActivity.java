@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity
         TextView date = findViewById(R.id.dateView);
         date.setText(phoneDate);
 
+        // Try to load the data, if list is not found, create a new array list
         try
         {
             loadData();
@@ -85,6 +86,7 @@ public class MainActivity extends AppCompatActivity
             tasks = new ArrayList<>();
         }
 
+        // Array Adapter for tasks
         taskAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, tasks);
 
         // OnClickListener for plus button
@@ -107,12 +109,12 @@ public class MainActivity extends AppCompatActivity
             {
                 if(tasks.size() == 0)
                 {
-                    Toast.makeText(MainActivity.this, "Your list is empty.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "Your list is already empty.", Toast.LENGTH_LONG).show();
                 }
                 else {
                     // Create dialog pop up for clear all button
                     final AlertDialog.Builder clearAllWarning = new AlertDialog.Builder(MainActivity.this);
-                    clearAllWarning.setTitle("Warning: This will clear ALL tasks");
+                    clearAllWarning.setTitle("WARNING: This will clear ALL tasks");
 
                     clearAllWarning.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
                         @Override
@@ -260,7 +262,6 @@ public class MainActivity extends AppCompatActivity
                                 // Save the data
                                 saveData();
 
-
                                 // Alert that change has been made
                                 Toast.makeText(MainActivity.this, "Task has been deleted.", Toast.LENGTH_LONG).show();
                             }
@@ -329,11 +330,15 @@ public class MainActivity extends AppCompatActivity
      */
     private void saveData()
     {
+        // New SharedPreferences, Editor, and Gson objects
         SharedPreferences appList = getSharedPreferences(PREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = appList.edit();
         Gson gson = new Gson();
+
         String item = gson.toJson(tasks);
+
         editor.putString(TASKS, item);
+
         editor.apply();
     }
 
@@ -342,17 +347,18 @@ public class MainActivity extends AppCompatActivity
      */
     private void loadData()
     {
+        // New SharedPreferences and Gson objects
         SharedPreferences appList = getSharedPreferences(PREFS, MODE_PRIVATE);
         Gson gson = new Gson();
+
         String item = appList.getString(TASKS, null);
         Type type = new TypeToken<ArrayList>() {}.getType();
         tasks = gson.fromJson(item, type);
 
+        // Throw exception if array list is not found
         if(tasks == null)
         {
             throw new Resources.NotFoundException();
         }
     }
-
-
 }

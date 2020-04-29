@@ -20,10 +20,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 
 import static com.example.plan_it.MainActivity.taskAdapter;
 import static com.example.plan_it.MainActivity.tasks;
