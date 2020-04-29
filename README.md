@@ -22,7 +22,7 @@ Here are some different views on the app.
 ## Compilation Instructions
 
 #### **(On Android Phone)**
-1. Download APK file to your computer
+1. Download APK file to your computer (app > release > app-release.apk)
 2. Allow third-party apps on your device (Menu > Settings > Security > check Unknown Sources)
 3. Connect android device to your computer as a media device
 4. Open your phone's folder
